@@ -151,7 +151,6 @@ photoStep.on('text', async ctx => {
         ctx.wizard.state.data.photo = ctx.message.text;
         // await ctx.replyWithHTML(`Отправьте фото <b>товара</b> альбомом\n<i>Как это сделать, видео ниже </i>`);
         await ctx.replyWithHTML(`Отправьте фото <b>товара</b> альбомом\n<i>Как это сделать, видео ниже </i>`);
-        await ctx.replyWithVideo({ source: 'video.mp4' })
 
         return ctx.wizard.next()
     } catch (e) {
@@ -161,7 +160,7 @@ photoStep.on('text', async ctx => {
 
 
 const conditionStep = new Composer()
-conditionStep.on('photo', async ctx => {
+conditionStep.on('text', async ctx => {
     try {
         ctx.wizard.state.data.condition = ctx.message.text;
         const wizardData = ctx.wizard.state.data;

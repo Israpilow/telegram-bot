@@ -115,32 +115,72 @@ experienceStep.action('no-experience', async ctx => {
     }
 })
 
-const portfolioStep = new Composer()
-portfolioStep.on('text', async ctx => {
+const contactsStep = new Composer()
+contactsStep.on('text', async ctx => {
     try {
-        ctx.wizard.state.data.portfolio = ctx.message.text;
-        const wizardData = ctx.wizard.state.data;
-        await ctx.replyWithHTML(`<b>${wizardData.title}</b>\n${wizardData.city}\n${wizardData.price}\n\n<b>Опыт работы: ${wizardData.experience}</b>\n\n<b>Портфолио</b>\n${wizardData.portfolio}\n\n<b>Контакты:</b>\n${yesUndefined(wizardData.firstName)} ${yesUndefined(wizardData.lastName)} \nТелеграм: @${yesUndefined(wizardData.userName)}`);
+        ctx.wizard.state.data.contacts = ctx.message;
+        await ctx.replyWithHTML(`<b>Отправьте контакт</b>`,{
+            reply_markup: JSON.stringify({
+                keyboard: [
+                    [{
+                        text: 'Отправить контакт',
+                        request_contact: true
+                    }]
+                    ],
+                    resize_keyboard: true,
+                    one_time_keyboard: true
+                })
+        });
+        return ctx.wizard.next()
     } catch (e) {
         console.log(e)
     }
 })
 
-portfolioStep.action('no-portfolio', async ctx => {
+contactsStep.action('no-portfolio', async ctx => {
     try {
         await ctx.answerCbQuery()
-        ctx.wizard.state.data.portfolio = 'Нет портфолио'
+        ctx.wizard.state.data.contacts = 'Нет портфолио'
+        await ctx.replyWithHTML(`<b>Отправьте контакт</b>`,{
+            reply_markup: JSON.stringify({
+                keyboard: [
+                    [{
+                        text: 'Отправить контакт',
+                        request_contact: true
+                    }]
+                    ],
+                    resize_keyboard: true,
+                    one_time_keyboard: true
+                })
+        });
+        return ctx.wizard.next()
+    } catch (e) {
+        console.log(e)
+    }
+})
+
+
+const portfolioStep = new Composer()
+portfolioStep.on('contact', async ctx => {
+    try {
+        ctx.wizard.state.data.portfolio = ctx.message;
         const wizardData = ctx.wizard.state.data;
-        await ctx.replyWithHTML(`<b>${wizardData.title}</b>\n${wizardData.city}\n${wizardData.price}\n\n<b>Опыт работы: ${wizardData.experience}</b>\n\n<b>Портфолио</b>\n${wizardData.portfolio}\n\n<b>Контакты:</b>\n${yesUndefined(wizardData.firstName)} ${yesUndefined(wizardData.lastName)} \nТелеграм: @${yesUndefined(wizardData.userName)}`);
+        await ctx.replyWithHTML(`<b>${wizardData.title}</b>\n${wizardData.city}\n${wizardData.price}\n\n<b>Опыт работы:</b> ${wizardData.experience}\n\n<b>Портфолио: </b>\n${wizardData.contacts}`);
         await ctx.replyWithHTML(`Ваше резюме успешно отправлено Администратору!`);
-        await ctx.telegram.sendMessage(1954192936, `<b>Резюме</b>\n\n<b>${wizardData.title}</b>\n${wizardData.city}\n${wizardData.price}\n\n<b>Опыт работы: ${wizardData.experience}</b>\n\n<b>Портфолио</b>\n${wizardData.portfolio}\n\n<b>Контакты:</b>\n${yesUndefined(wizardData.firstName)} ${yesUndefined(wizardData.lastName)} \nТелеграм: @${yesUndefined(wizardData.userName)}`, {
+        await ctx.telegram.sendMessage(1954192936, `<b>РЕЗЮМЕ</b>\n\n<b>${wizardData.title}</b>\n${wizardData.city}\n${wizardData.price}\n\n<b>Опыт работы:</b> ${wizardData.experience}\n\n<b>Портфолио: </b>\n${wizardData.contacts}`, {
             parse_mode: "HTML"
         });
+        await ctx.copyMessage(1954192936, wizardData.portfolio);
+        await ctx.reply('Выберите один из вариантов:', Markup.keyboard([
+            [Markup.button.callback('\u{1F4E2}Подать объявление\u{1F4E2}', 'btn1')],
+            [Markup.button.callback('\u{1F4E2}Канал с объявлениями\u{1F4E2}', 'btn2')],
+            [Markup.button.callback('Поддержка', 'btn3')]
+        ]).oneTime().resize())
         return ctx.scene.leave();
     } catch (e) {
         console.log(e)
     }
 })
 
-const resumeScene = new Scenes.WizardScene('resumeWizard', startStep, titleStep, cityStep, priceStep, classStep, experienceStep, portfolioStep)
+const resumeScene = new Scenes.WizardScene('resumeWizard', startStep, titleStep, cityStep, priceStep, classStep, experienceStep, contactsStep, portfolioStep)
 module.exports = resumeScene

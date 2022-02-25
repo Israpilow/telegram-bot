@@ -3,18 +3,26 @@ const {Telegraf, Markup, Scenes, session} = require("telegraf");
 require('dotenv').config()
 const text = require('./const')
 const vacancyScene = require('./scenes/vacancy.js')
+
 const resumeScene = require('./scenes/resume.js')
+
 const servicesScene = require('./scenes/services.js')
+
 const electronicsScene = require('./scenes/electronics.js')
+const phonesScene = require('./scenes/electronics/phones.js')
+
 const appliancesScene = require('./scenes/appliances.js')
+
 const autoScene = require('./scenes/auto.js')
+
 const specialScene = require('./scenes/special.js')
+
 const propertyScene = require('./scenes/property.js')
 
 
 const bot = new Telegraf(process.env.BOT_TOKEN, {polling: true})
 
-const stage = new Scenes.Stage([electronicsScene, vacancyScene, resumeScene, servicesScene, appliancesScene, autoScene, specialScene, propertyScene])
+const stage = new Scenes.Stage([electronicsScene, phonesScene, vacancyScene, resumeScene, servicesScene, appliancesScene, autoScene, specialScene, propertyScene])
 bot.use(session())
 bot.use(stage.middleware())
 
@@ -46,25 +54,37 @@ bot.command( '/start', async ctx => {
 //         ]).oneTime().resize())
 // })
 
+// bot.hears('\u{1F4E2}Подать объявление\u{1F4E2}', async ctx => {
+//     await ctx.reply('Выберите один из вариантов:', Markup.keyboard([
+//         [Markup.button.callback("\u{1F4F1}Телефоны", 'phones_btn'), Markup.button.callback(`\u{1F4BB}Ноутбуки`, 'laptops_btn'),Markup.button.callback('\u{1F69B}Настольные компьютеры', 'computers_btn')],
+//         [Markup.button.callback('Пристаки, Игры', 'games_btn'), Markup.button.callback("Фототехника", 'photos_btn'), Markup.button.callback("Прочее", 'other_btn')],
+//         [Markup.button.callback("\u{2B05}Нaзад", 'vacancy_btn')]
+//     ]).oneTime().resize())
+// })
+
 bot.hears('\u{1F4E2}Подать объявление\u{1F4E2}', async ctx => {
     await ctx.reply('Выберите один из вариантов:', Markup.keyboard([
-        [Markup.button.callback("\u{1F4F1}Электроника", 'electronics_btn'), Markup.button.callback(`\u{1F4BB}Бытовая техника`, 'electronics_btn'),Markup.button.callback('\u{1F69B}Спецтехника', 'special_btn')],
+        [Markup.button.callback("\u{1F4F1}Электроника", 'electronics_btn'), Markup.button.callback(`\u{1F4BB}Бытовая техника`, 'appliances_btn'),Markup.button.callback('\u{1F69B}Спецтехника', 'special_btn')],
         [Markup.button.callback('\u{1F698}Авто', 'auto_btn'),Markup.button.callback('\u{1F468}\u{1F527}Ремонт под ключ', 'repair_btn'), Markup.button.callback("\u{1F3E1}Недвижимость", 'property_btn')],
         [Markup.button.callback("\u{2705}Вакансии", 'vacancy_btn'), Markup.button.callback('\u{2705}Резюме', 'resume_btn'), Markup.button.callback('\u{2705}Услуги', 'services_btn')],
         [Markup.button.callback("\u{2B05}Назад", 'vacancy_btn')]
-        ]).oneTime().resize())
+    ]).oneTime().resize())
 })
 
-// bot.hears('\u{1F4F1}Электроника', async ctx => {
-//     await ctx.reply('Выберите один из вариантов:', Markup.keyboard([
-//         [Markup.button.callback("\u{1F4F1}Телефоны", 'phone_btn'), Markup.button.callback(`\u{1F4BB}Ноутбуки`, 'laptop_btn'),Markup.button.callback('\u{1F69B}Настольные компьютеры', 'computer_btn')],
-//         [Markup.button.callback('Пристаки, Игры', 'games_btn'), Markup.button.callback("Фототехника", 'photo_btn')]
-//         [Markup.button.callback("\u{2B05}Назад", 'vacancy_btn')]
-//         ]).oneTime().resize())
-// })
+bot.hears('\u{1F4F1}Электроника', async ctx => {
+    await ctx.reply('Выберите один из вариантов:', Markup.keyboard([
+        [Markup.button.callback("\u{1F4F1}Телефоны", 'phones_btn'), Markup.button.callback(`\u{1F4BB}Ноутбуки`, 'laptops_btn'),Markup.button.callback('\u{1F69B}Настольные компьютеры', 'computers_btn')],
+        [Markup.button.callback('Пристаки, Игры', 'games_btn'), Markup.button.callback("Фототехника", 'photos_btn'), Markup.button.callback("Прочее", 'other_btn')],
+        [Markup.button.callback("\u{2B05}Нaзад", 'vacancy_btn')]
+    ]).oneTime().resize())
+})
 
-bot.hears('\u{1F4F1}Электроника', ctx => {
-    ctx.scene.enter('electronicsWizard')
+// Электроника
+// bot.hears('\u{1F4F1}Прочее', ctx => {
+//     ctx.scene.enter('electronicsWizard')
+// })
+bot.hears('\u{1F4F1}Телефоны', ctx => {
+    ctx.scene.enter('phonesWizard')
 })
 
 bot.hears('\u{1F4BB}Бытовая техника', ctx => {
@@ -109,15 +129,41 @@ bot.hears('\u{1F4E2}Канал с объявлениями\u{1F4E2}', async ctx 
     }
 })
 
-bot.hears('\u{2B05}Назад', async ctx => {
-    await ctx.reply('Выберите один из вариантов:', Markup.keyboard([
-        [Markup.button.callback('\u{1F4E2}Подать объявление\u{1F4E2}', 'btn1')],
-        [Markup.button.callback('\u{1F4E2}Канал с объявлениями\u{1F4E2}', 'btn2')],
-        [Markup.button.callback('Поддержка', 'btn3')]
-        ]).oneTime().resize())
+// bot.hears('\u{2B05}Назад', async ctx => {
+//     await ctx.reply('Выберите один из вариантов:', Markup.keyboard([
+//         [Markup.button.callback('\u{1F4E2}Подать объявление\u{1F4E2}', 'btn1')],
+//         [Markup.button.callback('\u{1F4E2}Канал с объявлениями\u{1F4E2}', 'btn2')],
+//         [Markup.button.callback('Поддержка', 'btn3')]
+//         ]).oneTime().resize())
+// })
+
+bot.on('photo', async ctx => {
+    const photo = ctx.message
+    await ctx.copyMessage(1954192936, photo);
+    console.log(photo)
 })
 
-
+bot.on('text', async ctx => {
+    try {
+        if (ctx.message.text === '\u{2B05}Назад') {
+            await ctx.reply('Выберите один из вариантов:', Markup.keyboard([
+                [Markup.button.callback('\u{1F4E2}Подать объявление\u{1F4E2}', 'btn1')],
+                [Markup.button.callback('\u{1F4E2}Канал с объявлениями\u{1F4E2}', 'btn2')],
+                [Markup.button.callback('Поддержка', 'btn3')]
+            ]).oneTime().resize())
+        }
+        if (ctx.message.text === '\u{2B05}Нaзад') {
+            await ctx.reply('Выберите один из вариантов:', Markup.keyboard([
+                [Markup.button.callback("\u{1F4F1}Электроника", 'electronics_btn'), Markup.button.callback(`\u{1F4BB}Бытовая техника`, 'appliances_btn'),Markup.button.callback('\u{1F69B}Спецтехника', 'special_btn')],
+                [Markup.button.callback('\u{1F698}Авто', 'auto_btn'),Markup.button.callback('\u{1F468}\u{1F527}Ремонт под ключ', 'repair_btn'), Markup.button.callback("\u{1F3E1}Недвижимость", 'property_btn')],
+                [Markup.button.callback("\u{2705}Вакансии", 'vacancy_btn'), Markup.button.callback('\u{2705}Резюме', 'resume_btn'), Markup.button.callback('\u{2705}Услуги', 'services_btn')],
+                [Markup.button.callback("\u{2B05}Назад", 'vacancy_btn')]
+            ]).oneTime().resize())
+        }
+    } catch (e) {
+        console.log(e)
+    }
+})
 
 bot.help((ctx) => ctx.reply(text.commands))
 
