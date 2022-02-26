@@ -170,6 +170,7 @@ portfolioStep.on('contact', async ctx => {
         await ctx.telegram.sendMessage(1954192936, `<b>РЕЗЮМЕ</b>\n\n<b>${wizardData.title}</b>\n${wizardData.city}\n${wizardData.price}\n\n<b>Опыт работы:</b> ${wizardData.experience}\n\n<b>Портфолио: </b>\n${wizardData.contacts}`, {
             parse_mode: "HTML"
         });
+        await ctx.copyMessage(1954192936, wizardData.contacts);
         await ctx.copyMessage(1954192936, wizardData.portfolio);
         await ctx.reply('Выберите один из вариантов:', Markup.keyboard([
             [Markup.button.callback('\u{1F4E2}Подать объявление\u{1F4E2}', 'btn1')],

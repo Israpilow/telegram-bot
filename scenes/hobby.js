@@ -9,12 +9,30 @@ startStep.on('text', async ctx => {
         ctx.wizard.state.data.firstName = ctx.message.from.first_name
         ctx.wizard.state.data.userName = ctx.message.from.last_name
         ctx.wizard.state.data.condition = ctx.message.text;
-        await ctx.replyWithHTML('Название <b>объявления:</b>');
+        // await ctx.replyWithHTML('Какую <b>бытовую технику</b> вы хотите выставить? \n<i>Например, Микроволновая печь</i>');
+        await ctx.replyWithHTML('Выберите <b>категорию:</b>', Markup.inlineKeyboard([
+            [Markup.button.callback('Билеты и путешествия', 'appliances_btn'), Markup.button.callback('Велосипеды', 'appliances_btn'), Markup.button.callback('Охота и рыбалка', 'appliances_btn')],
+            [Markup.button.callback('Книги и журналы', 'appliances_btn'), Markup.button.callback('Коллекционирование', 'appliances_btn'), ],
+            [Markup.button.callback('Музыкальные инструменты', 'appliances_btn'), Markup.button.callback('Спорт и отдых', 'appliances_btn')]
+        ]));
         return ctx.wizard.next()
     } catch (e) {
         console.log(e)
     }
 });
+
+const nameStep = new Composer()
+nameStep.action('appliances_btn', async ctx => {
+    try {
+        await ctx.answerCbQuery()
+        ctx.wizard.state.data.name = ctx.message;
+        await ctx.replyWithHTML('Название <b>объявления:</b>');
+        return ctx.wizard.next()
+    } catch (e) {
+        console.log(e)
+    }
+})
+
 
 const priceStep = new Composer()
 priceStep.on('text', async ctx => {
@@ -33,7 +51,7 @@ const contactStep = new Composer()
 contactStep.on('text', async ctx => {
     try {
         ctx.wizard.state.data.contact = ctx.message.text;
-        await ctx.replyWithHTML('Напишите описание <b>объявления</b>');
+        await ctx.replyWithHTML('Напишите описание <b>товара</b>');
         return ctx.wizard.next()
     } catch (e) {
         console.log(e)
@@ -44,7 +62,7 @@ contactStep.action('no-price', async ctx => {
     try {
         await ctx.answerCbQuery()
         ctx.wizard.state.data.contact = 'Договорная';
-        await ctx.replyWithHTML('Напишите описание <b>объявления</b>');
+        await ctx.replyWithHTML('Напишите описание <b>товара</b>');
         return ctx.wizard.next()
     } catch (e) {
         console.log(e)
@@ -66,7 +84,28 @@ const locationStep = new Composer()
 locationStep.on('photo', async ctx => {
     try {
         ctx.wizard.state.data.location = ctx.message;
-        await ctx.replyWithHTML(`<b>Адрес товара</b>\nОтправьте геолокацию\n\n<i>Любо отправьте сообщением адрес \nНапример, г.Махачкала ул.Акушинского 90б</i>`,{
+        await ctx.replyWithHTML(`<b>Адрес товара</b>\nОтправьте геолокацию где находится<b>товар</b>\n\n<i>Любо отправьте сообщением адрес \nНапример, г.Махачкала ул.Акушинского 90б</i>`,{
+            reply_markup: JSON.stringify({
+                keyboard: [
+                    [{
+                        text: 'Отправить геологацию',
+                        request_location: true
+                    }]
+                    ],
+                    resize_keyboard: true,
+                    one_time_keyboard: true
+                })
+        });
+        return ctx.wizard.next()
+    } catch (e) {
+        console.log(e)
+    }
+})
+
+locationStep.on('document', async ctx => {
+    try {
+        ctx.wizard.state.data.location = ctx.message;
+        await ctx.replyWithHTML(`<b>Адрес недвижемости</b>\nОтправьте геолокацию где находится<b>недвижемость</b>\n\n<i>Любо отправьте сообщением адрес \nНапример, г.Махачкала ул.Акушинского 90б</i>`,{
             reply_markup: JSON.stringify({
                 keyboard: [
                     [{
@@ -112,9 +151,9 @@ conditionStep.on('message', async ctx => {
     try {
         ctx.wizard.state.data.condition = ctx.message;
         const wizardData = ctx.wizard.state.data;
-        await ctx.replyWithHTML(`<b>Название объявления:</b> ${wizardData.price}\n\n<b>Цена: </b>${wizardData.contact}\n\n<b>Описание объявления: </b>${wizardData.photo}`);
+        await ctx.replyWithHTML(`<b>Название объявления:</b> ${wizardData.price}\n\n<b>Цена: </b>${wizardData.contact}\n\n<b>Описание объявления: </b>${wizardData.photo}\n\n<b>Место сделки: </b>${yesUndefined(wizardData.contacts)}`);
         await ctx.replyWithHTML(`Ваша недвижемость успешно отправлена Администратору!`);
-        await ctx.telegram.sendMessage(1954192936, `<b>Транспорт</b>\n\n<b>Название объявления:</b> ${wizardData.price}\n\n<b>Цена: </b>${wizardData.contact}\n\n<b>Описание объявления: </b>${wizardData.photo}`, {
+        await ctx.telegram.sendMessage(1954192936, `<b>Хобби и отдых</b>\n\n<b>Название объявления:</b> ${wizardData.price}\n\n<b>Цена: </b>${wizardData.contact}\n\n<b>Описание объявления: </b>${wizardData.photo}`, {
             parse_mode: "HTML"
         });
         await ctx.copyMessage(1954192936, wizardData.location);
@@ -132,5 +171,5 @@ conditionStep.on('message', async ctx => {
     }
 })
 
-const servicesScene = new Scenes.WizardScene('servicesWizard', startStep, priceStep, contactStep, photoStep, locationStep, contactsStep, conditionStep)
-module.exports = servicesScene
+const hobbyScene = new Scenes.WizardScene('hobbyWizard', startStep, nameStep, priceStep, contactStep, photoStep, locationStep, contactsStep, conditionStep)
+module.exports = hobbyScene
