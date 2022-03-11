@@ -61,11 +61,6 @@ photoStep.on('photo', async ctx => {
         await ctx.replyWithPhoto(
             {
                 url: photoURL
-            },
-            {
-                caption: "Это текст под кнопкой!",
-                parse_mode: "HTML",
-                reply_markup: JSON.stringify({"inline_keyboard": [[ Markup.button.callback("Кнопка", "button")]]})
             }
         );
         // console.log(photoURLStart)
