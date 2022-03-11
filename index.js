@@ -45,6 +45,7 @@ const stage = new Scenes.Stage(
 bot.use(session())
 bot.use(stage.middleware())
 
+// bot.start( async ctx => DATABASE.sync())
 
 bot.command( '/start', async ctx => {
     try {

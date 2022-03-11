@@ -71,7 +71,7 @@ photoStep.on('photo', async ctx => {
         // console.log(photoURLStart)
         ctx.wizard.state.data.photo = ctx.message.text;
         await ctx.replyWithHTML(`Отправьте <b>фотографии</b> в одном сообщении\n<i>На данный момент не более 1</i>`);
-        // return ctx.wizard.next()
+        return ctx.wizard.next()
     } catch (e) {
         console.log(e)
     }
