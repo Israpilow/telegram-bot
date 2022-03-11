@@ -90,12 +90,12 @@ bot.hears('Работа', async ctx => {
 })
 
 // Недвижемость
-bot.hears('Недвижимость', async ctx => {
-    await ctx.reply('Выберите один из вариантов:', Markup.keyboard([
-        [Markup.button.callback("Квартиры", 'vacancy_btn'), Markup.button.callback(`Комнаты`, 'resume_btn'), Markup.button.callback(`Другое`, 'resume_btn')],
-        [Markup.button.callback("\u{2B05}Назад", 'back_btn')]
-    ]).oneTime().resize())
-})
+// bot.hears('Недвижимость', async ctx => {
+//     await ctx.reply('Выберите один из вариантов:', Markup.keyboard([
+//         [Markup.button.callback("Квартиры", 'vacancy_btn'), Markup.button.callback(`Комнаты`, 'resume_btn'), Markup.button.callback(`Другое`, 'resume_btn')],
+//         [Markup.button.callback("\u{2B05}Назад", 'back_btn')]
+//     ]).oneTime().resize())
+// })
 
 
 // Электроника
@@ -126,12 +126,12 @@ bot.hears('Запчасти и аксессуары', ctx => {
 //     ctx.scene.enter('specialWizard')
 // })
 
-bot.hears('\u{1F698}Авто', ctx => {
-    ctx.scene.enter('autoWizard')
-})
+// bot.hears('Авто', ctx => {
+//     ctx.scene.enter('autoWizard')
+// })
 
 // Недвижемость
-bot.hears('\u{1F3E1}Недвижимость', ctx => {
+bot.hears('Недвижимость', ctx => {
     ctx.scene.enter('propertyWizard')
 })
 
