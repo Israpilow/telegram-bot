@@ -9,29 +9,30 @@ startStep.on('text', async ctx => {
         ctx.wizard.state.data.firstName = ctx.message.from.first_name
         ctx.wizard.state.data.userName = ctx.message.from.last_name
         ctx.wizard.state.data.condition = ctx.message.text;
-        await ctx.replyWithHTML('Выберите <b>категорию:</b>', Markup.inlineKeyboard([
-            [Markup.button.callback('Квартиры', 'appliances_btn'), Markup.button.callback('Комнаты', 'appliances_btn')],
-            [Markup.button.callback('Дома дачи и коттеджи', 'appliances_btn'), Markup.button.callback('Гаражи и машиностроения', 'appliances_btn')],
-            [Markup.button.callback('Земельные участки', 'appliances_btn'), Markup.button.callback('Комменрческая недвижемость', 'appliances_btn')],
-            [Markup.button.callback('Другое', 'appliances_btn')]
-        ]));
+        // await ctx.replyWithHTML('Выберите <b>категорию:</b>', Markup.inlineKeyboard([
+        //     [Markup.button.callback('Квартиры', 'appliances_btn'), Markup.button.callback('Комнаты', 'appliances_btn')],
+        //     [Markup.button.callback('Дома дачи и коттеджи', 'appliances_btn'), Markup.button.callback('Гаражи и машиностроения', 'appliances_btn')],
+        //     [Markup.button.callback('Земельные участки', 'appliances_btn'), Markup.button.callback('Комменрческая недвижемость', 'appliances_btn')],
+        //     [Markup.button.callback('Другое', 'appliances_btn')]
+        // ]));
+        await ctx.replyWithHTML('<b>ШАБЛОН ДЛЯ ЗАПОЛНЕНИЯ КВАРТИРЫ</b>\n\n<i>1. Название объявления\n2. Описание объявления\n3. Цена\n4. Адрес\n5. Контакты</i>');
         return ctx.wizard.next()
     } catch (e) {
         console.log(e)
     }
 });
 
-const nameStep = new Composer()
-nameStep.action('appliances_btn', async ctx => {
-    try {
-        await ctx.answerCbQuery()
-        ctx.wizard.state.data.name = ctx.message;
-        await ctx.replyWithHTML('<b>ШАБЛОН ДЛЯ ЗАПОЛНЕНИЯ НЕДВИЖОМОСТИ</b>\n\n<i>1. Название объявления\n2. Описание объявления\n3. Цена\n4. Адрес\n5. Контакты</i>');
-        return ctx.wizard.next()
-    } catch (e) {
-        console.log(e)
-    }
-})
+// const nameStep = new Composer()
+// nameStep.action('appliances_btn', async ctx => {
+//     try {
+//         await ctx.answerCbQuery()
+//         ctx.wizard.state.data.name = ctx.message;
+//         await ctx.replyWithHTML('<b>ШАБЛОН ДЛЯ ЗАПОЛНЕНИЯ НЕДВИЖОМОСТИ</b>\n\n<i>1. Название объявления\n2. Описание объявления\n3. Цена\n4. Адрес\n5. Контакты</i>');
+//         return ctx.wizard.next()
+//     } catch (e) {
+//         console.log(e)
+//     }
+// })
 
 
 // const checkPhotoStep = new Composer()
@@ -100,10 +101,10 @@ conditionStep.on('document', async ctx => {
         const wizardData = ctx.wizard.state.data;
         await ctx.replyWithHTML(`${wizardData.checkPhoto}`);
         await ctx.replyWithHTML(`Ваше <b>объявление</b> успешно отправлена Администратору!`);
-        await ctx.telegram.sendMessage(1954192936, `<b>НЕДВИЖОМОСТИ</b>\n\n${wizardData.checkPhoto}`, {
+        await ctx.telegram.sendMessage(1954192936, `<b>КВАРТИРЫ</b>\n\n${wizardData.checkPhoto}`, {
             parse_mode: "HTML"
         });
-        await ctx.telegram.sendMessage(974900206, `<b>НЕДВИЖОМОСТИ</b>\n\n${wizardData.checkPhoto}`, {
+        await ctx.telegram.sendMessage(974900206, `<b>КВАРТИРЫ</b>\n\n${wizardData.checkPhoto}`, {
             parse_mode: "HTML"
         });
         await ctx.copyMessage(1954192936, wizardData.condition);
@@ -120,5 +121,5 @@ conditionStep.on('document', async ctx => {
     }
 })
 
-const propertyScene = new Scenes.WizardScene('propertyWizard', startStep, nameStep, photoStep, conditionStep)
+const propertyScene = new Scenes.WizardScene('propertyWizard', startStep, photoStep, conditionStep)
 module.exports = propertyScene
