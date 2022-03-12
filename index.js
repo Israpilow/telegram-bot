@@ -19,9 +19,9 @@ const specialScene = require('./scenes/special.js')
 
 const propertyScene = require('./scenes/property.js')
 
-const sparesScene = require('./scenes/spares.js')
+const sparesScene = require('./scenes/studios.js')
 
-const animalsScene = require('./scenes/animals.js')
+const animalsScene = require('./scenes/rooms.js')
 
 const hobbyScene = require('./scenes/hobby.js')
 
