@@ -26,8 +26,7 @@ nameStep.action('appliances_btn', async ctx => {
     try {
         await ctx.answerCbQuery()
         ctx.wizard.state.data.name = ctx.message;
-        await ctx.replyWithHTML('<b>ШАБЛОН ДЛЯ ЗАПОЛНЕНИЯ ТРАНСПОРТ</b>\n\n<i>1. Название объявления\n2. Состояние(новое|б/у)\n3. Описание объявления\n4. Цена\n5. Адрес\n6. Контакты\n7. Стоимость объявления 200 руб.</i>');
-        await ctx.replyWithHTML('Сбербанк 5228 6005 2216 8428');
+        await ctx.replyWithHTML('<b>ШАБЛОН ДЛЯ ЗАПОЛНЕНИЯ ТРАНСПОРТ</b>\n\n<i>1. Название объявления\n2. Состояние(новое|б/у)\n3. Описание объявления\n4. Цена\n5. Адрес\n6. Контакты</i>');
         return ctx.wizard.next()
     } catch (e) {
         console.log(e)
