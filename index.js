@@ -89,7 +89,7 @@ bot.hears('\u{1F4E2}Подать объявление\u{1F4E2}', async ctx => {
 // Работа
 bot.hears('Работа', async ctx => {
     await ctx.reply('Выберите один из вариантов:', Markup.keyboard([
-        [Markup.button.callback("Вакансии", 'vacancy_btn'), Markup.button.callback(`Резюме`, 'resume_btn')],
+        [Markup.button.callback("Вакансии", 'vacancy_btn'), Markup.button.callback(`Резюме`, 'resume_btn'), Markup.button.callback(`Услуги`, 'resume_btn')],
         [Markup.button.callback("\u{2B05}Назад", 'back_btn')]
     ]).oneTime().resize())
 })
@@ -179,9 +179,9 @@ bot.hears('Резюме', ctx => {
 //     ctx.scene.enter('animalsWizard')
 // })
 
-// bot.hears('Услуги', ctx => {
-//     ctx.scene.enter('servicesWizard')
-// })
+bot.hears('Услуги', ctx => {
+    ctx.scene.enter('servicesWizard')
+})
 
 
 //******************************************КАНАЛ С ОБЪЯВЛЕНИЯМИ**************************************************
