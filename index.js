@@ -47,9 +47,9 @@ bot.use(stage.middleware())
 
 // bot.start( async ctx => DATABASE.sync())
 
-bot.setMyCommands( [
-    {command: '/start', description: 'Начальное приветствие'}
-])
+// bot.setMyCommands( [
+//     {command: '/start', description: 'Начальное приветствие'}
+// ])
 
 bot.command( '/start', async ctx => {
     try {
