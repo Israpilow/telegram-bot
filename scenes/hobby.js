@@ -27,19 +27,41 @@ nameStep.action('appliances_btn', async ctx => {
     try {
         await ctx.answerCbQuery()
         ctx.wizard.state.data.name = ctx.message;
-        await ctx.replyWithHTML('<b>ШАБЛОН ДЛЯ ЗАПОЛНЕНИЯ ХОББИ И ОТДЫХ</b>\n\n<i>1. Название объявления\n2. Состояние(новое|б/у)\n3. Описание объявления\n4. Цена\n5. Адрес\n6. Контакты</i>');
-
+        await ctx.replyWithHTML('<b>ШАБЛОН ДЛЯ ЗАПОЛНЕНИЯ ХОББИ И ОТДЫХ</b>\n\n<i>1. Название объявления\n2. Состояние(новое|б/у)\n3. Описание объявления\n4. Цена\n5. Адрес\n6. Контакты\n7. Стоимость объявления 200 руб.</i>');
+        await ctx.replyWithHTML('Сбербанк 5228 6005 2216 8428');
         return ctx.wizard.next()
     } catch (e) {
         console.log(e)
     }
 })
 
+const checkPhotoStep = new Composer()
+checkPhotoStep.on('text', async ctx => {
+    try {
+        ctx.wizard.state.data.checkPhoto = ctx.message.text;
+        await ctx.replyWithHTML(`Отправьте скриншот <b>чека</b>`);
+        return ctx.wizard.next()
+    } catch (e) {
+        console.log(e)
+    }
+})
 
 const photoStep = new Composer()
-photoStep.on('text', async ctx => {
+photoStep.on('photo', async ctx => {
     try {
-        ctx.wizard.state.data.photo = ctx.message.text;
+        
+        ctx.wizard.state.data.photo = ctx.message;
+        const wizardData = ctx.wizard.state.data;
+        await ctx.replyWithHTML(`Отправьте <b>фотографии</b> в одном сообщении\n<i>На данный момент не более 1</i>`);
+        return ctx.wizard.next()
+    } catch (e) {
+        console.log(e)
+    }
+})
+
+photoStep.on('document', async ctx => {
+    try {
+        ctx.wizard.state.data.photo = ctx.message;
         await ctx.replyWithHTML(`Отправьте <b>фотографии</b> в одном сообщении\n<i>На данный момент не более 1</i>`);
         return ctx.wizard.next()
     } catch (e) {
@@ -52,17 +74,18 @@ conditionStep.on('photo', async ctx => {
     try {
         ctx.wizard.state.data.condition = ctx.message;
         const wizardData = ctx.wizard.state.data;
-        await ctx.replyWithHTML(`${wizardData.photo}`);
         await ctx.replyWithHTML(`Ваше <b>объявление</b> успешно отправлена Администратору!`);
-        await ctx.telegram.sendMessage(1954192936, `<b>ЭЛЕКТРОНИКА</b>\n\n${wizardData.photo}`, {
+        await ctx.telegram.sendMessage(1954192936, `<b>ХОББИ И ОТДЫХ</b>\n\n${wizardData.checkPhoto}`, {
             parse_mode: "HTML"
         });
-        await ctx.copyMessage(1954192936, wizardData.condition);
-        await ctx.reply('Выберите один из вариантов:', Markup.keyboard([
-            [Markup.button.callback('\u{1F4E2}Подать объявление\u{1F4E2}', 'btn1')],
-            [Markup.button.callback('\u{1F4E2}Канал с объявлениями\u{1F4E2}', 'btn2')],
-            [Markup.button.callback('Поддержка', 'btn3')]
-        ]).oneTime().resize())
+        await ctx.telegram.sendMessage(974900206, `<b>ХОББИ И ОТДЫХ</b>\n\n${wizardData.checkPhoto}`, {
+            parse_mode: "HTML"
+        });
+        await ctx.copyMessage(1954192936, wizardData.photo)
+        await ctx.copyMessage(1954192936, wizardData.condition)
+
+        await ctx.copyMessage(974900206, wizardData.photo);
+        await ctx.copyMessage(974900206, wizardData.condition);
         return ctx.scene.leave();
     } catch (e) {
         console.log(e)
@@ -73,22 +96,24 @@ conditionStep.on('document', async ctx => {
     try {
         ctx.wizard.state.data.condition = ctx.message;
         const wizardData = ctx.wizard.state.data;
-        await ctx.replyWithHTML(`${wizardData.photo}`);
+        await ctx.replyWithHTML(`${wizardData.checkPhoto}`);
         await ctx.replyWithHTML(`Ваше <b>объявление</b> успешно отправлена Администратору!`);
-        await ctx.telegram.sendMessage(1954192936, `<b>ЭЛЕКТРОНИКА</b>\n\n${wizardData.photo}`, {
+        await ctx.telegram.sendMessage(1954192936, `<b>ХОББИ И ОТДЫХ</b>\n\n${wizardData.checkPhoto}`, {
             parse_mode: "HTML"
         });
+        await ctx.telegram.sendMessage(974900206, `<b>ХОББИ И ОТДЫХ</b>\n\n${wizardData.checkPhoto}`, {
+            parse_mode: "HTML"
+        });
+        await ctx.copyMessage(1954192936, wizardData.photo);
         await ctx.copyMessage(1954192936, wizardData.condition);
-        await ctx.reply('Выберите один из вариантов:', Markup.keyboard([
-            [Markup.button.callback('\u{1F4E2}Подать объявление\u{1F4E2}', 'btn1')],
-            [Markup.button.callback('\u{1F4E2}Канал с объявлениями\u{1F4E2}', 'btn2')],
-            [Markup.button.callback('Поддержка', 'btn3')]
-        ]).oneTime().resize())
+
+        await ctx.copyMessage(974900206, wizardData.photo);
+        await ctx.copyMessage(974900206, wizardData.condition);
         return ctx.scene.leave();
     } catch (e) {
         console.log(e)
     }
 })
 
-const hobbyScene = new Scenes.WizardScene('hobbyWizard', startStep, nameStep, photoStep, conditionStep)
+const hobbyScene = new Scenes.WizardScene('hobbyWizard', startStep, nameStep, checkPhotoStep, photoStep, conditionStep)
 module.exports = hobbyScene

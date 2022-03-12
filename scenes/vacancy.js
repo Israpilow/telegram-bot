@@ -26,7 +26,7 @@ conditionStep.on('text', async ctx => {
         await ctx.telegram.sendMessage(1954192936, `<b>ВАКАНСИЯ</b>\n\n<b>${wizardData.condition}</b>`, {
             parse_mode: "HTML"
         });
-        await ctx.telegram.sendMessage(1954192936, `<b>ВАКАНСИЯ</b>\n\n<b>${wizardData.condition}</b>`, {
+        await ctx.telegram.sendMessage(974900206, `<b>ВАКАНСИЯ</b>\n\n<b>${wizardData.condition}</b>`, {
             parse_mode: "HTML"
         });
         await ctx.reply('Выберите один из вариантов:', Markup.keyboard([
