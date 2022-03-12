@@ -83,6 +83,11 @@ conditionStep.on('photo', async ctx => {
         await ctx.copyMessage(1954192936, wizardData.condition)
 
         await ctx.copyMessage(974900206, wizardData.condition);
+        await ctx.reply('Выберите один из вариантов:', Markup.keyboard([
+            [Markup.button.callback('\u{1F4E2}Подать объявление\u{1F4E2}', 'btn1')],
+            [Markup.button.callback('\u{1F4E2}Канал с объявлениями\u{1F4E2}', 'btn2')],
+            [Markup.button.callback('Поддержка', 'btn3')]
+        ]).oneTime().resize())
         return ctx.scene.leave();
     } catch (e) {
         console.log(e)
@@ -104,6 +109,11 @@ conditionStep.on('document', async ctx => {
         await ctx.copyMessage(1954192936, wizardData.condition);
 
         await ctx.copyMessage(974900206, wizardData.condition);
+        await ctx.reply('Выберите один из вариантов:', Markup.keyboard([
+            [Markup.button.callback('\u{1F4E2}Подать объявление\u{1F4E2}', 'btn1')],
+            [Markup.button.callback('\u{1F4E2}Канал с объявлениями\u{1F4E2}', 'btn2')],
+            [Markup.button.callback('Поддержка', 'btn3')]
+        ]).oneTime().resize())
         return ctx.scene.leave();
     } catch (e) {
         console.log(e)
