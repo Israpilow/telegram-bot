@@ -31,22 +31,22 @@ nameStep.action('appliances_btn', async ctx => {
     }
 })
 
-const checkPhotoStep = new Composer()
-checkPhotoStep.on('text', async ctx => {
-    try {
-        ctx.wizard.state.data.checkPhoto = ctx.message.text;
-        await ctx.replyWithHTML(`Отправьте скриншот <b>чека</b>`);
-        return ctx.wizard.next()
-    } catch (e) {
-        console.log(e)
-    }
-})
+// const checkPhotoStep = new Composer()
+// checkPhotoStep.on('text', async ctx => {
+//     try {
+//         ctx.wizard.state.data.checkPhoto = ctx.message.text;
+//         await ctx.replyWithHTML(`Отправьте скриншот <b>чека</b>`);
+//         return ctx.wizard.next()
+//     } catch (e) {
+//         console.log(e)
+//     }
+// })
 
 const photoStep = new Composer()
-photoStep.on('photo', async ctx => {
+photoStep.on('text', async ctx => {
     try {
         
-        ctx.wizard.state.data.photo = ctx.message;
+        ctx.wizard.state.data.photo = ctx.message.text;
         const wizardData = ctx.wizard.state.data;
         await ctx.replyWithHTML(`Отправьте <b>фотографии</b> в одном сообщении\n<i>На данный момент не более 1</i>`);
         return ctx.wizard.next()
@@ -55,32 +55,31 @@ photoStep.on('photo', async ctx => {
     }
 })
 
-photoStep.on('document', async ctx => {
-    try {
-        ctx.wizard.state.data.photo = ctx.message;
-        await ctx.replyWithHTML(`Отправьте <b>фотографии</b> в одном сообщении\n<i>На данный момент не более 1</i>`);
-        return ctx.wizard.next()
-    } catch (e) {
-        console.log(e)
-    }
-})
+// photoStep.on('document', async ctx => {
+//     try {
+//         ctx.wizard.state.data.photo = ctx.message;
+//         await ctx.replyWithHTML(`Отправьте <b>фотографии</b> в одном сообщении\n<i>На данный момент не более 1</i>`);
+//         return ctx.wizard.next()
+//     } catch (e) {
+//         console.log(e)
+//     }
+// })
 
 const conditionStep = new Composer()
 conditionStep.on('photo', async ctx => {
     try {
         ctx.wizard.state.data.condition = ctx.message;
         const wizardData = ctx.wizard.state.data;
+        await ctx.replyWithHTML(`${wizardData.photo}`);
         await ctx.replyWithHTML(`Ваше <b>объявление</b> успешно отправлена Администратору!`);
-        await ctx.telegram.sendMessage(1954192936, `<b>ДЛЯ ДОМА И ДЛЯ ДАЧИ</b>\n\n${wizardData.checkPhoto}`, {
+        await ctx.telegram.sendMessage(1954192936, `<b>ДЛЯ ДОМА И ДЛЯ ДАЧИ</b>\n\n${wizardData.photo}`, {
             parse_mode: "HTML"
         });
-        await ctx.telegram.sendMessage(974900206, `<b>ДЛЯ ДОМА И ДЛЯ ДАЧИ</b>\n\n${wizardData.checkPhoto}`, {
+        await ctx.telegram.sendMessage(974900206, `<b>ДЛЯ ДОМА И ДЛЯ ДАЧИ</b>\n\n${wizardData.photo}`, {
             parse_mode: "HTML"
         });
-        await ctx.copyMessage(1954192936, wizardData.photo)
         await ctx.copyMessage(1954192936, wizardData.condition)
 
-        await ctx.copyMessage(974900206, wizardData.photo);
         await ctx.copyMessage(974900206, wizardData.condition);
         return ctx.scene.leave();
     } catch (e) {
@@ -92,18 +91,16 @@ conditionStep.on('document', async ctx => {
     try {
         ctx.wizard.state.data.condition = ctx.message;
         const wizardData = ctx.wizard.state.data;
-        await ctx.replyWithHTML(`${wizardData.checkPhoto}`);
+        await ctx.replyWithHTML(`${wizardData.photo}`);
         await ctx.replyWithHTML(`Ваше <b>объявление</b> успешно отправлена Администратору!`);
-        await ctx.telegram.sendMessage(1954192936, `<b>ДЛЯ ДОМА И ДЛЯ ДАЧИ</b>\n\n${wizardData.checkPhoto}`, {
+        await ctx.telegram.sendMessage(1954192936, `<b>ДЛЯ ДОМА И ДЛЯ ДАЧИ</b>\n\n${wizardData.photo}`, {
             parse_mode: "HTML"
         });
-        await ctx.telegram.sendMessage(974900206, `<b>ДЛЯ ДОМА И ДЛЯ ДАЧИ</b>\n\n${wizardData.checkPhoto}`, {
+        await ctx.telegram.sendMessage(974900206, `<b>ДЛЯ ДОМА И ДЛЯ ДАЧИ</b>\n\n${wizardData.photo}`, {
             parse_mode: "HTML"
         });
-        await ctx.copyMessage(1954192936, wizardData.photo);
         await ctx.copyMessage(1954192936, wizardData.condition);
 
-        await ctx.copyMessage(974900206, wizardData.photo);
         await ctx.copyMessage(974900206, wizardData.condition);
         return ctx.scene.leave();
     } catch (e) {
@@ -111,5 +108,5 @@ conditionStep.on('document', async ctx => {
     }
 })
 
-const appliancesScene = new Scenes.WizardScene('appliancesWizard', startStep, nameStep, checkPhotoStep, photoStep, conditionStep)
+const appliancesScene = new Scenes.WizardScene('appliancesWizard', startStep, nameStep, photoStep, conditionStep)
 module.exports = appliancesScene
