@@ -2,20 +2,16 @@ const TelegramApi = require('telegraf')
 const {Telegraf, Markup, Scenes, session} = require("telegraf");
 require('dotenv').config()
 const text = require('./const')
+// const sequelize = require('./db')
+// const UserModel = require('./models')
+
+
+
 const vacancyScene = require('./scenes/vacancy.js')
 
 const resumeScene = require('./scenes/resume.js')
 
 const servicesScene = require('./scenes/services.js')
-
-const electronicsScene = require('./scenes/electronics.js')
-const phonesScene = require('./scenes/electronics/phones.js')
-
-const appliancesScene = require('./scenes/appliances.js')
-
-const autoScene = require('./scenes/auto.js')
-
-const specialScene = require('./scenes/special.js')
 
 const propertyScene = require('./scenes/property.js')
 
@@ -23,7 +19,6 @@ const sparesScene = require('./scenes/studios.js')
 
 const animalsScene = require('./scenes/rooms.js')
 
-const hobbyScene = require('./scenes/hobby.js')
 
 
 
@@ -31,16 +26,11 @@ const bot = new Telegraf(process.env.BOT_TOKEN, {polling: true})
 
 const stage = new Scenes.Stage(
     [
-    electronicsScene,
     vacancyScene, resumeScene,
     servicesScene,
-    appliancesScene,
-    autoScene,
-    specialScene,
     propertyScene,
     sparesScene,
     animalsScene,
-    hobbyScene
     ])
 bot.use(session())
 bot.use(stage.middleware())
@@ -51,17 +41,20 @@ bot.use(stage.middleware())
 //     {command: '/start', description: 'Начальное приветствие'}
 // ])
 
-bot.command( '/start', async ctx => {
-    try {
-        await ctx.reply('Выберите один из вариантов:', Markup.keyboard([
-        [Markup.button.callback('\u{1F4E2}Подать объявление\u{1F4E2}', 'btn1')],
-        [Markup.button.callback('\u{1F4E2}Канал с объявлениями\u{1F4E2}', 'btn2')],
-        [Markup.button.callback('Поддержка', 'btn3')]
-    ]).oneTime().resize())
-    } catch (e) {
-        console.log(e)
-    }
-})
+
+    bot.command( '/start', async ctx => {
+        try {
+            // await sequelize.authenticate()
+            // await sequelize.sync()
+            await ctx.reply('Выберите один из вариантов:', Markup.keyboard([
+            [Markup.button.callback('\u{1F4E2}Подать объявление\u{1F4E2}', 'btn1')],
+            [Markup.button.callback('\u{1F4E2}Канал с объявлениями\u{1F4E2}', 'btn2')],
+            [Markup.button.callback('Поддержка', 'btn3')]
+        ]).oneTime().resize())
+        } catch (e) {
+            console.log(e)
+        }
+    })
 
 // bot.setMyCommands( [
 //     {command: '/start', description: 'Начальное приветствие'}
