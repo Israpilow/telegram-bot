@@ -148,8 +148,6 @@ bot.on('text', async ctx => {
     }
 });
 
-bot.help((ctx) => ctx.reply(text.commands));
-
 bot.launch();
 
 process.once('SIGINT', () => bot.stop('SIGINT'));
