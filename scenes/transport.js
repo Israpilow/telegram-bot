@@ -67,10 +67,10 @@ doneStep.on('text', async (ctx) => {
     });
     await ctx.telegram.sendMediaGroup(1954192936, photos[ctx.from.id]);
 
-    // await ctx.telegram.sendMessage(974900206, `<b>ТРАНСПОРТ</b>\n\n<b>${wizardData.photo}</b>`, {
-    //     parse_mode: "HTML"
-    // });
-    // await ctx.telegram.sendMediaGroup(974900206, photos[ctx.from.id]);
+    await ctx.telegram.sendMessage(974900206, `<b>ТРАНСПОРТ</b>\n\n<b>${wizardData.photo}</b>`, {
+        parse_mode: "HTML"
+    });
+    await ctx.telegram.sendMediaGroup(974900206, photos[ctx.from.id]);
     console.log(photos[ctx.from.id]);
     photos[ctx.from.id] = [];
     return ctx.scene.leave();
