@@ -62,12 +62,12 @@ doneStep.on('text', async (ctx) => {
     await ctx.replyWithHTML(`Ваше <b>объявление</b> успешно отправлена Администратору!`);
     // await ctx.replyWithMediaGroup(photos[ctx.from.id])
 
-    await ctx.telegram.sendMessage(1954192936, `<b>ЭЛЕКТРОНИК</b>\n\n<b>${wizardData.photo}</b>`, {
+    await ctx.telegram.sendMessage(1954192936, `<b>ЭЛЕКТРОНИКА</b>\n\n<b>${wizardData.photo}</b>`, {
         parse_mode: "HTML"
     });
     await ctx.telegram.sendMediaGroup(1954192936, photos[ctx.from.id]);
 
-    await ctx.telegram.sendMessage(974900206, `<b>ЭЛЕКТРОНИК</b>\n\n<b>${wizardData.photo}</b>`, {
+    await ctx.telegram.sendMessage(974900206, `<b>ЭЛЕКТРОНИКА</b>\n\n<b>${wizardData.photo}</b>`, {
         parse_mode: "HTML"
     });
     await ctx.telegram.sendMediaGroup(974900206, photos[ctx.from.id]);
