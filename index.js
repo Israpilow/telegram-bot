@@ -5,7 +5,6 @@ const {
     session
 } = require("telegraf");
 require('dotenv').config();
-const text = require('./const');
 const vacancyScene = require('./scenes/vacancy.js'),
     resumeScene = require('./scenes/resume.js'),
     servicesScene = require('./scenes/services.js'),
