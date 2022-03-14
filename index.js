@@ -13,10 +13,12 @@ const vacancyScene = require('./scenes/vacancy.js'),
     studiosScene = require('./scenes/studios.js'),
     roomsScene = require('./scenes/rooms.js');
 
+// Bot
 const bot = new Telegraf(process.env.BOT_TOKEN, {
     polling: true
 });
 
+// Scenes
 const stage = new Scenes.Stage(
     [
         vacancyScene, resumeScene,
