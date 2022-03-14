@@ -2,10 +2,6 @@ const TelegramApi = require('telegraf')
 const {Telegraf, Markup, Scenes, session} = require("telegraf");
 require('dotenv').config()
 const text = require('./const')
-// const sequelize = require('./db')
-// const UserModel = require('./models')
-
-
 
 const vacancyScene = require('./scenes/vacancy.js')
 
@@ -15,12 +11,9 @@ const servicesScene = require('./scenes/services.js')
 
 const propertyScene = require('./scenes/property.js')
 
-const sparesScene = require('./scenes/studios.js')
+const studiosScene = require('./scenes/studios.js')
 
-const animalsScene = require('./scenes/rooms.js')
-
-
-
+const roomsScene = require('./scenes/rooms.js')
 
 const bot = new Telegraf(process.env.BOT_TOKEN, {polling: true})
 
@@ -29,8 +22,8 @@ const stage = new Scenes.Stage(
     vacancyScene, resumeScene,
     servicesScene,
     propertyScene,
-    sparesScene,
-    animalsScene,
+    studiosScene,
+    roomsScene,
     ])
 bot.use(session())
 bot.use(stage.middleware())
@@ -41,20 +34,63 @@ bot.use(stage.middleware())
 //     {command: '/start', description: 'Начальное приветствие'}
 // ])
 
+const photos = {}
 
-    bot.command( '/start', async ctx => {
-        try {
-            // await sequelize.authenticate()
-            // await sequelize.sync()
-            await ctx.reply('Выберите один из вариантов:', Markup.keyboard([
-            [Markup.button.callback('\u{1F4E2}Подать объявление\u{1F4E2}', 'btn1')],
-            [Markup.button.callback('\u{1F4E2}Канал с объявлениями\u{1F4E2}', 'btn2')],
-            [Markup.button.callback('Поддержка', 'btn3')]
-        ]).oneTime().resize())
-        } catch (e) {
-            console.log(e)
-        }
-    })
+bot.command( '/start', async ctx => {
+    try {
+        // await sequelize.authenticate()
+        // await sequelize.sync()
+
+        // let cities = ['scenes/res/1.jpg', 'scenes/res/2.jpg', 'scenes/res/3.jpg', 'scenes/res/4.jpg'];
+
+        // let result = cities.map(city => {
+        //     return {
+        //         type: 'photo',
+        //         media: {
+        //             source: city
+        //         }
+        //     }
+        // })
+        // console.log(result)
+        // await bot.telegram.sendMediaGroup(ctx.chat.id, result)
+
+        // photos[ctx.from.id] = []
+        // ctx.reply('Please, send me from 2 to 10 photos.\n'+'Send /done to create album or /cancel to abort operation')
+
+
+        await ctx.reply('Выберите один из вариантов:', Markup.keyboard([
+        [Markup.button.callback('\u{1F4E2}Подать объявление\u{1F4E2}', 'btn1')],
+        [Markup.button.callback('\u{1F4E2}Канал с объявлениями\u{1F4E2}', 'btn2')],
+        [Markup.button.callback('Поддержка', 'btn3')]
+    ]).oneTime().resize())
+    } catch (e) {
+        console.log(e)
+    }
+})
+
+// bot.command('/cancel', (ctx) => photos[ctx.from.id] = [])
+
+// bot.command('/done', (ctx) => {
+//     ctx.reply('Спасибо')
+//     if (photos[ctx.from.id].length < 2 || photos[ctx.from.id].length > 10) return
+//     done(ctx)
+//   })
+
+// bot.on('photo', (ctx) => {
+//     const lastPhoto = ctx.message.photo.length - 1
+//     photos[ctx.from.id] = photos[ctx.from.id] || []
+//     photos[ctx.from.id].push({type: 'photo', media: ctx.message.photo[lastPhoto].file_id})
+//     if (photos[ctx.from.id].length >= 10) {
+//         done(ctx)
+//     }
+// })
+
+// function done(ctx) {
+//     ctx.replyWithMediaGroup(photos[ctx.from.id])
+//     ctx.telegram.sendMediaGroup(1954192936, photos[ctx.from.id])
+//     console.log(photos[ctx.from.id])
+//     photos[ctx.from.id] = []
+//   }
 
 // bot.setMyCommands( [
 //     {command: '/start', description: 'Начальное приветствие'}
@@ -65,12 +101,12 @@ bot.use(stage.middleware())
 
 
 // Транспорт
-// bot.hears('Транспорт', async ctx => {
-//     await ctx.reply('Выберите один из вариантов:', Markup.keyboard([
-//         [Markup.button.callback('\u{1F69B}Спецтехника', 'special_btn'), Markup.button.callback('\u{1F698}Авто', 'auto_btn')],
-//         [Markup.button.callback("\u{2B05}Нaзад", 'back_btn')]
-//     ]).oneTime().resize())
-// })
+bot.hears('Транспорт', async ctx => {
+    await ctx.reply('Выберите один из вариантов:', Markup.keyboard([
+        [Markup.button.callback('\u{1F69B}Спецтехника', 'special_btn'), Markup.button.callback('\u{1F698}Авто', 'auto_btn')],
+        [Markup.button.callback("\u{2B05}Нaзад", 'back_btn')]
+    ]).oneTime().resize())
+})
 
 bot.hears('\u{1F4E2}Подать объявление\u{1F4E2}', async ctx => {
     await ctx.reply('Выберите один из вариантов:', Markup.keyboard([
@@ -110,42 +146,9 @@ bot.hears('Посуточно', async ctx => {
     ]).oneTime().resize())
 })
 
-
-// Электроника
-// bot.hears('Электроника', ctx => {
-//     ctx.scene.enter('electronicsWizard')
-// })
-// bot.hears('Транспорт', ctx => {
-//     ctx.scene.enter('specialWizard')
-// })
-
-// bot.hears('Хобби и отдых', ctx => {
-//     ctx.scene.enter('hobbyWizard')
-// })
-
-// bot.hears('Животные', ctx => {
-//     ctx.scene.enter('animalsWizard')
-// })
-
-// bot.hears('Для дома и дачи', ctx => {
-//     ctx.scene.enter('appliancesWizard')
-// })
-
-// bot.hears('Запчасти и аксессуары', ctx => {
-//     ctx.scene.enter('sparesWizard')
-// })
-
-// bot.hears('\u{1F69B}Спецтехника', ctx => {
-//     ctx.scene.enter('specialWizard')
-// })
-
-// bot.hears('Авто', ctx => {
-//     ctx.scene.enter('autoWizard')
-// })
-
 // Недвижемость
 bot.hears('Студии', ctx => {
-    ctx.scene.enter('propertyWizard')
+    ctx.scene.enter('studiosWizard')
 })
 
 bot.hears('Квартиры', ctx => {
@@ -153,7 +156,7 @@ bot.hears('Квартиры', ctx => {
 })
 
 bot.hears('Комнаты', ctx => {
-    ctx.scene.enter('propertyWizard')
+    ctx.scene.enter('roomsWizard')
 })
 
 bot.hears('Другое', ctx => {
@@ -167,10 +170,6 @@ bot.hears('Вакансии', ctx => {
 bot.hears('Резюме', ctx => {
     ctx.scene.enter('resumeWizard')
 })
-
-// bot.hears('Животные', ctx => {
-//     ctx.scene.enter('animalsWizard')
-// })
 
 bot.hears('Услуги', ctx => {
     ctx.scene.enter('servicesWizard')
@@ -207,14 +206,6 @@ bot.on('text', async ctx => {
                 [Markup.button.callback('Поддержка', 'btn3')]
             ]).oneTime().resize())
         }
-        if (ctx.message.text === '\u{2B05}Нaзад') {
-        await ctx.reply('Выберите один из вариантов:', Markup.keyboard([
-            [Markup.button.callback("\u{1F4F1}Электроника", 'electronics_btn'), Markup.button.callback(`\u{1F4BB}Бытовая техника`, 'appliances_btn'),Markup.button.callback('Транспорт', 'special_btn')],
-            [Markup.button.callback('\u{1F468}\u{1F527}Ремонт под ключ', 'repair_btn'), Markup.button.callback("\u{1F3E1}Недвижимость", 'property_btn')],
-            [Markup.button.callback("Работа", 'work_btn'), Markup.button.callback('\u{2705}Услуги', 'services_btn')],
-            [Markup.button.callback("\u{2B05}Назад", 'back_btn')]
-        ]).oneTime().resize())
-        }
     } catch (e) {
         console.log(e)
     }
@@ -227,3 +218,4 @@ bot.launch()
 process.once('SIGINT', () => bot.stop('SIGINT'))
 process.once('SIGTERM', () => bot.stop('SIGTERM'))
 
+module.exports = bot;

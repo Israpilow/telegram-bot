@@ -4,17 +4,12 @@ const yesUndefined = name => typeof name === 'undefined' || 'Object' ? '' : name
 const startStep = new Composer()
 startStep.on('text', async ctx => {
     try {
+        photos[ctx.from.id] = []
         ctx.wizard.state.data = {}
         ctx.wizard.state.data.userName = ctx.message.from.username
         ctx.wizard.state.data.firstName = ctx.message.from.first_name
         ctx.wizard.state.data.userName = ctx.message.from.last_name
         ctx.wizard.state.data.condition = ctx.message.text;
-        // await ctx.replyWithHTML('Выберите <b>категорию:</b>', Markup.inlineKeyboard([
-        //     [Markup.button.callback('Собаки', 'appliances_btn'), Markup.button.callback('Кошки', 'appliances_btn')],
-        //     [Markup.button.callback('Аквариум', 'appliances_btn'), Markup.button.callback('Другие животные', 'appliances_btn')],
-        //     [Markup.button.callback('Товары для животных', 'appliances_btn'), Markup.button.callback('Птицы', 'appliances_btn')],
-        //     [Markup.button.callback('Другое', 'appliances_btn')]
-        // ]));
         await ctx.replyWithHTML('<b>ШАБЛОН ДЛЯ ЗАПОЛНЕНИЯ КОМНАТЫ</b>\n\n<i>1. Название объявления\n2. Описание объявления\n3. Цена\n4. Адрес\n5. Контакты</i>');
         return ctx.wizard.next()
     } catch (e) {
@@ -22,104 +17,59 @@ startStep.on('text', async ctx => {
     }
 });
 
-// const nameStep = new Composer()
-// nameStep.action('appliances_btn', async ctx => {
-//     try {
-//         await ctx.answerCbQuery()
-//         ctx.wizard.state.data.name = ctx.message;
-//         await ctx.replyWithHTML('<b>ШАБЛОН ДЛЯ ЗАПОЛНЕНИЯ ЖИВОТНЫЕ</b>\n\n<i>1. Название объявления\n2. Описание объявления\n4. Цена\n5. Адрес\n6. Контакты</i>');
-//         return ctx.wizard.next()
-//     } catch (e) {
-//         console.log(e)
-//     }
-// })
-
-
-// const checkPhotoStep = new Composer()
-// checkPhotoStep.on('text', async ctx => {
-//     try {
-//         ctx.wizard.state.data.checkPhoto = ctx.message.text;
-//         await ctx.replyWithHTML(`Отправьте скриншот <b>чека</b>`);
-//         return ctx.wizard.next()
-//     } catch (e) {
-//         console.log(e)
-//     }
-// })
+const photos = {}
 
 const photoStep = new Composer()
 photoStep.on('text', async ctx => {
     try {
-        
+
         ctx.wizard.state.data.photo = ctx.message.text;
-        const wizardData = ctx.wizard.state.data;
-        await ctx.replyWithHTML(`Отправьте <b>фотографии</b> в одном сообщении\n<i>На данный момент не более 1</i>`);
+
+        photos[ctx.from.id] = []
+        await ctx.reply(`Пришлите фотографии.\nНажмите на кнопку чтобы отправить`, Markup.keyboard([
+            [Markup.button.callback('Отправить', 'send')],
+            [Markup.button.callback("\u{2B05}Назад", 'back_btn')]
+        ]).oneTime().resize())
         return ctx.wizard.next()
     } catch (e) {
         console.log(e)
     }
 })
 
-// photoStep.on('document', async ctx => {
-//     try {
-//         ctx.wizard.state.data.photo = ctx.message;
-//         await ctx.replyWithHTML(`Отправьте <b>фотографии</b> в одном сообщении\n<i>На данный момент не более 1</i>`);
-//         return ctx.wizard.next()
-//     } catch (e) {
-//         console.log(e)
-//     }
-// })
+const botStep = new Composer()
+botStep.on('photo', (ctx) => {
+    const lastPhoto = ctx.message.photo.length - 1
 
-const conditionStep = new Composer()
-conditionStep.on('photo', async ctx => {
-    try {
-        ctx.wizard.state.data.condition = ctx.message;
-        const wizardData = ctx.wizard.state.data;
-        await ctx.replyWithHTML(`Ваше <b>объявление</b> успешно отправлена Администратору!`);
-        await ctx.telegram.sendMessage(1954192936, `<b>КОМНАТЫ</b>\n\n${wizardData.photo}`, {
-            parse_mode: "HTML"
-        });
-        await ctx.telegram.sendMessage(974900206, `<b>КОМНАТЫ</b>\n\n${wizardData.photo}`, {
-            parse_mode: "HTML"
-        });
-        await ctx.copyMessage(1954192936, wizardData.condition)
+    photos[ctx.from.id] = photos[ctx.from.id] || []
+    photos[ctx.from.id].push({type: 'photo', media: ctx.message.photo[lastPhoto].file_id})
 
-        await ctx.copyMessage(974900206, wizardData.condition);
-        await ctx.reply('Выберите один из вариантов:', Markup.keyboard([
-            [Markup.button.callback('\u{1F4E2}Подать объявление\u{1F4E2}', 'btn1')],
-            [Markup.button.callback('\u{1F4E2}Канал с объявлениями\u{1F4E2}', 'btn2')],
-            [Markup.button.callback('Поддержка', 'btn3')]
-        ]).oneTime().resize())
-        return ctx.scene.leave();
-    } catch (e) {
-        console.log(e)
-    }
+    if (photos[ctx.from.id].length < 2 || photos[ctx.from.id].length > 10) {
+        return ctx.wizard.next()
+    } 
+    
 })
 
-conditionStep.on('document', async ctx => {
-    try {
-        ctx.wizard.state.data.condition = ctx.message;
-        const wizardData = ctx.wizard.state.data;
-        await ctx.replyWithHTML(`${wizardData.photo}`);
-        await ctx.replyWithHTML(`Ваше <b>объявление</b> успешно отправлена Администратору!`);
-        await ctx.telegram.sendMessage(1954192936, `<b>КОМНАТЫ</b>\n\n${wizardData.photo}`, {
-            parse_mode: "HTML"
-        });
-        await ctx.telegram.sendMessage(974900206, `<b>КОМНАТЫ</b>\n\n${wizardData.photo}`, {
-            parse_mode: "HTML"
-        });
-        await ctx.copyMessage(1954192936, wizardData.condition);
+const doneStep = new Composer()
 
-        await ctx.copyMessage(974900206, wizardData.condition);
-        await ctx.reply('Выберите один из вариантов:', Markup.keyboard([
-            [Markup.button.callback('\u{1F4E2}Подать объявление\u{1F4E2}', 'btn1')],
-            [Markup.button.callback('\u{1F4E2}Канал с объявлениями\u{1F4E2}', 'btn2')],
-            [Markup.button.callback('Поддержка', 'btn3')]
-        ]).oneTime().resize())
-        return ctx.scene.leave();
-    } catch (e) {
-        console.log(e)
-    }
+doneStep.on('text', async (ctx) => {
+    ctx.wizard.state.data.done = ctx.message.text;
+    const wizardData = ctx.wizard.state.data;
+    await ctx.replyWithHTML(`Ваше <b>объявление</b> успешно отправлена Администратору!`);
+    // await ctx.replyWithMediaGroup(photos[ctx.from.id])
+
+    await ctx.telegram.sendMessage(1954192936, `<b>КОМНАТЫ</b>\n\n<b>${wizardData.photo}</b>`, {
+        parse_mode: "HTML"
+    });
+    await ctx.telegram.sendMediaGroup(1954192936, photos[ctx.from.id])
+
+    await ctx.telegram.sendMessage(974900206, `<b>КВАРТИРЫ</b>\n\n<b>${wizardData.photo}</b>`, {
+        parse_mode: "HTML"
+    });
+    await ctx.telegram.sendMediaGroup(974900206, photos[ctx.from.id])
+    console.log(photos[ctx.from.id])
+    photos[ctx.from.id] = []
+    return ctx.scene.leave();
 })
 
-const animalsScene = new Scenes.WizardScene('animalsWizard', startStep, photoStep, conditionStep)
-module.exports = animalsScene
+const roomsScene = new Scenes.WizardScene('roomsWizard', startStep, photoStep, botStep, doneStep)
+module.exports = roomsScene
