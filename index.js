@@ -1,28 +1,35 @@
-const {Telegraf, Markup, Scenes, session} = require("telegraf");
+const {
+    Telegraf,
+    Markup,
+    Scenes,
+    session
+} = require("telegraf");
 require('dotenv').config();
 const text = require('./const');
 const vacancyScene = require('./scenes/vacancy.js'),
-      resumeScene = require('./scenes/resume.js'),
-      servicesScene = require('./scenes/services.js'),
-      propertyScene = require('./scenes/property.js'),
-      studiosScene = require('./scenes/studios.js'),
-      roomsScene = require('./scenes/rooms.js');
+    resumeScene = require('./scenes/resume.js'),
+    servicesScene = require('./scenes/services.js'),
+    propertyScene = require('./scenes/property.js'),
+    studiosScene = require('./scenes/studios.js'),
+    roomsScene = require('./scenes/rooms.js');
 
-const bot = new Telegraf(process.env.BOT_TOKEN, {polling: true});
+const bot = new Telegraf(process.env.BOT_TOKEN, {
+    polling: true
+});
 
 const stage = new Scenes.Stage(
     [
-    vacancyScene, resumeScene,
-    servicesScene,
-    propertyScene,
-    studiosScene,
-    roomsScene,
+        vacancyScene, resumeScene,
+        servicesScene,
+        propertyScene,
+        studiosScene,
+        roomsScene,
     ]);
 bot.use(session());
 bot.use(stage.middleware());
 
-
-bot.command( '/start', async ctx => {
+// Start
+bot.command('/start', async ctx => {
     try {
         await ctx.reply('Выберите один из вариантов:', Markup.keyboard([
             [Markup.button.callback('\u{1F4E2}Подать объявление\u{1F4E2}', 'btn1')],
@@ -105,9 +112,9 @@ bot.hears('Услуги', ctx => {
 //******************************************КАНАЛ С ОБЪЯВЛЕНИЯМИ**************************************************
 bot.hears('\u{1F4E2}Канал с объявлениями\u{1F4E2}', async ctx => {
     try {
-            await ctx.reply('Вы можете перейти на канал\nс объявления по ссылке ниже', Markup.inlineKeyboard([
-        [Markup.button.url('Перейти на канал', 'https://t.me/+5V71SFuwpfMzZTIy')]
-    ]));
+        await ctx.reply('Вы можете перейти на канал\nс объявления по ссылке ниже', Markup.inlineKeyboard([
+            [Markup.button.url('Перейти на канал', 'https://t.me/+5V71SFuwpfMzZTIy')]
+        ]));
     } catch (e) {
         console.log(e);
     }
@@ -116,9 +123,9 @@ bot.hears('\u{1F4E2}Канал с объявлениями\u{1F4E2}', async ctx 
 //******************************************ПОДДЕРЖКА**************************************************
 bot.hears('Поддержка', async ctx => {
     try {
-            await ctx.reply('Вы можете обратиться к администратору\nпо ссылке ниже', Markup.inlineKeyboard([
-        [Markup.button.url('Написать администратору', 'https://t.me/muhammad_israfilov')]
-    ]));
+        await ctx.reply('Вы можете обратиться к администратору\nпо ссылке ниже', Markup.inlineKeyboard([
+            [Markup.button.url('Написать администратору', 'https://t.me/muhammad_israfilov')]
+        ]));
     } catch (e) {
         console.log(e);
     }
