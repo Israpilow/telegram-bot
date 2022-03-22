@@ -42,7 +42,7 @@ bot.command('/start', async ctx => {
     try {
         await ctx.reply('Выберите один из вариантов:', Markup.keyboard([
             [Markup.button.callback('\u{1F4E2}Подать объявление\u{1F4E2}', 'btn1')],
-            [Markup.button.callback('\u{1F4E2}Канал с объявлениями\u{1F4E2}', 'btn2')],
+            [Markup.button.callback('\u{1F4E2}Посмотреть все объявления\u{1F4E2}', 'btn2')],
             [Markup.button.callback('Написать админу', 'btn3')]
         ]).oneTime().resize());
     } catch (e) {
@@ -138,7 +138,7 @@ bot.hears('Оргетехника и расходники', ctx => ctx.scene.ent
 
 
 //******************************************КАНАЛ С ОБЪЯВЛЕНИЯМИ**************************************************
-bot.hears('\u{1F4E2}Канал с объявлениями\u{1F4E2}', async ctx => {
+bot.hears('\u{1F4E2}Посмотреть все объявления\u{1F4E2}', async ctx => {
     try {
         await ctx.reply('Вы можете перейти на канал\nс объявления по ссылке ниже', Markup.inlineKeyboard([
             [Markup.button.url('Перейти на канал', 'https://t.me/+5V71SFuwpfMzZTIy')]
@@ -152,7 +152,7 @@ bot.hears('\u{1F4E2}Канал с объявлениями\u{1F4E2}', async ctx 
 bot.hears('Написать админу', async ctx => {
     try {
         await ctx.reply('Вы можете обратиться к администратору\nпо ссылке ниже', Markup.inlineKeyboard([
-            [Markup.button.url('Написать администратору', 'https://t.me/muhammad_israfilov')],
+            [Markup.button.url('Написать владельцу', 'https://t.me/muhammad_israfilov')],
             [Markup.button.url('Написать администратору', 'https://t.me/Seruleb')]
         ]));
     } catch (e) {
@@ -166,7 +166,7 @@ bot.on('text', async ctx => {
         if (ctx.message.text === '\u{2B05}Назад') {
             await ctx.reply('Выберите один из вариантов:', Markup.keyboard([
                 [Markup.button.callback('\u{1F4E2}Подать объявление\u{1F4E2}', 'btn1')],
-                [Markup.button.callback('\u{1F4E2}Канал с объявлениями\u{1F4E2}', 'btn2')],
+                [Markup.button.callback('\u{1F4E2}Посмотреть все объявления\u{1F4E2}', 'btn2')],
                 [Markup.button.callback('Написать админу', 'btn3')]
             ]).oneTime().resize());
         }

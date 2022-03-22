@@ -82,7 +82,7 @@ doneStep.on('text', async (ctx) => {
     photos[ctx.from.id] = [];
     await ctx.reply('Выберите один из вариантов:', Markup.keyboard([
         [Markup.button.callback('\u{1F4E2}Подать объявление\u{1F4E2}', 'btn1')],
-        [Markup.button.callback('\u{1F4E2}Канал с объявлениями\u{1F4E2}', 'btn2')],
+        [Markup.button.callback('\u{1F4E2}Посмотреть все объявления\u{1F4E2}', 'btn2')],
         [Markup.button.callback('Написать админу', 'btn3')]
     ]).oneTime().resize());
     return ctx.scene.leave();
