@@ -32,6 +32,10 @@ conditionStep.on('text', async ctx => {
         await ctx.telegram.sendMessage(974900206, `<b>РЕЗЮМЕ</b>\n\n<b>${wizardData.condition}</b>`, {
             parse_mode: "HTML"
         });
+
+        await ctx.telegram.sendMessage(1722633425, `<b>РЕЗЮМЕ</b>\n\n<b>${wizardData.condition}</b>`, {
+            parse_mode: "HTML"
+        });
         await ctx.reply('Выберите один из вариантов:', Markup.keyboard([
             [Markup.button.callback('\u{1F4E2}Подать объявление\u{1F4E2}', 'btn1')],
             [Markup.button.callback('\u{1F4E2}Канал с объявлениями\u{1F4E2}', 'btn2')],
