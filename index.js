@@ -43,7 +43,7 @@ bot.command('/start', async ctx => {
         await ctx.reply('Выберите один из вариантов:', Markup.keyboard([
             [Markup.button.callback('\u{1F4E2}Подать объявление\u{1F4E2}', 'btn1')],
             [Markup.button.callback('\u{1F4E2}Канал с объявлениями\u{1F4E2}', 'btn2')],
-            [Markup.button.callback('Поддержка', 'btn3')]
+            [Markup.button.callback('Написать админу', 'btn3')]
         ]).oneTime().resize());
     } catch (e) {
         console.log(e);
@@ -149,10 +149,11 @@ bot.hears('\u{1F4E2}Канал с объявлениями\u{1F4E2}', async ctx 
 });
 
 //******************************************ПОДДЕРЖКА**************************************************
-bot.hears('Поддержка', async ctx => {
+bot.hears('Написать админу', async ctx => {
     try {
         await ctx.reply('Вы можете обратиться к администратору\nпо ссылке ниже', Markup.inlineKeyboard([
-            [Markup.button.url('Написать администратору', 'https://t.me/muhammad_israfilov')]
+            [Markup.button.url('Написать администратору', 'https://t.me/muhammad_israfilov')],
+            [Markup.button.url('Написать администратору', 'https://t.me/Seruleb')]
         ]));
     } catch (e) {
         console.log(e);
@@ -166,7 +167,7 @@ bot.on('text', async ctx => {
             await ctx.reply('Выберите один из вариантов:', Markup.keyboard([
                 [Markup.button.callback('\u{1F4E2}Подать объявление\u{1F4E2}', 'btn1')],
                 [Markup.button.callback('\u{1F4E2}Канал с объявлениями\u{1F4E2}', 'btn2')],
-                [Markup.button.callback('Поддержка', 'btn3')]
+                [Markup.button.callback('Написать админу', 'btn3')]
             ]).oneTime().resize());
         }
     } catch (e) {

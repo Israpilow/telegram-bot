@@ -78,7 +78,13 @@ doneStep.on('text', async (ctx) => {
     await ctx.telegram.sendMediaGroup(1722633425, photos[ctx.from.id]);
     console.log(photos[ctx.from.id]);
     photos[ctx.from.id] = [];
+    await ctx.reply('Выберите один из вариантов:', Markup.keyboard([
+        [Markup.button.callback('\u{1F4E2}Подать объявление\u{1F4E2}', 'btn1')],
+        [Markup.button.callback('\u{1F4E2}Канал с объявлениями\u{1F4E2}', 'btn2')],
+        [Markup.button.callback('Написать админу', 'btn3')]
+    ]).oneTime().resize());
     return ctx.scene.leave();
+    
 });
 
 const electronicsScene = new Scenes.WizardScene('electronicsWizard', startStep, photoStep, botStep, doneStep);
