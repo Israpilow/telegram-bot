@@ -12,7 +12,7 @@ startStep.on('text', async ctx => {
         ctx.wizard.state.data.firstName = ctx.message.from.first_name;
         ctx.wizard.state.data.lastName = ctx.message.from.last_name;
         ctx.wizard.state.data.start = ctx.message.text;
-        await ctx.replyWithHTML('<b>ШАБЛОН ДЛЯ ЗАПОЛНЕНИЯ ВАКАНСИИ</b>\n\n<i>1. Должность(кто требуется)\n2. Пол "М/Ж"\n3. Возраст\n4. Требования(по желанию)\n5. Условия труда(по желанию)\n6. Город\n7. Контакты</i>');
+        await ctx.replyWithHTML('<b>ШАБЛОН ДЛЯ ЗАПОЛНЕНИЯ ВАКАНСИИ</b>\n\n<i>1. Должность(кто требуется. Например: Требуется официантка)\n2. Пол "М/Ж"\n3. Возраст\n4. Требования(по желанию)\n5. Условия труда(по желанию)\n6. Город\n7. Контакты</i>');
         return ctx.wizard.next();
     } catch (e) {
         console.log(e);
