@@ -67,17 +67,17 @@ doneStep.action('send', async (ctx) => {
 
     // await ctx.replyWithMediaGroup(photos[ctx.from.id])
 
-    await ctx.telegram.sendMessage(1954192936, `<b>СТУДИИ</b>\n\n<b>${wizardData.photo}</b>`, {
+    await ctx.telegram.sendMessage(1954192936, `<b>СТУДИЯ</b>\n\n<b>${wizardData.photo}</b>`, {
         parse_mode: "HTML"
     });
     await ctx.telegram.sendMediaGroup(1954192936, photos[ctx.from.id]);
 
-    await ctx.telegram.sendMessage(974900206, `<b>СТУДИИ</b>\n\n<b>${wizardData.photo}</b>`, {
+    await ctx.telegram.sendMessage(974900206, `<b>СТУДИЯ</b>\n\n<b>${wizardData.photo}</b>`, {
         parse_mode: "HTML"
     });
     await ctx.telegram.sendMediaGroup(974900206, photos[ctx.from.id]);
 
-    await ctx.telegram.sendMessage(1722633425, `<b>СТУДИИ</b>\n\n<b>${wizardData.photo}</b>`, {
+    await ctx.telegram.sendMessage(1722633425, `<b>СТУДИЯ</b>\n\n<b>${wizardData.photo}</b>`, {
         parse_mode: "HTML"
     });
     await ctx.telegram.sendMediaGroup(1722633425, photos[ctx.from.id]);
@@ -98,17 +98,17 @@ doneStep.on('text', async (ctx) => {
     ctx.wizard.state.data.done = ctx.message.text;
     const wizardData = ctx.wizard.state.data;
 
-    await ctx.telegram.sendMessage(1954192936, `<b>СТУДИИ</b>\n\n<b>${wizardData.photo}</b>`, {
+    await ctx.telegram.sendMessage(1954192936, `<b>СТУДИЯ</b>\n\n<b>${wizardData.photo}</b>`, {
         parse_mode: "HTML"
     });
     await ctx.telegram.sendMediaGroup(1954192936, photos[ctx.from.id]);
 
-    await ctx.telegram.sendMessage(974900206, `<b>СТУДИИ</b>\n\n<b>${wizardData.photo}</b>`, {
+    await ctx.telegram.sendMessage(974900206, `<b>СТУДИЯ</b>\n\n<b>${wizardData.photo}</b>`, {
         parse_mode: "HTML"
     });
     await ctx.telegram.sendMediaGroup(974900206, photos[ctx.from.id]);
 
-    await ctx.telegram.sendMessage(1722633425, `<b>СТУДИИ</b>\n\n<b>${wizardData.photo}</b>`, {
+    await ctx.telegram.sendMessage(1722633425, `<b>СТУДИЯ</b>\n\n<b>${wizardData.photo}</b>`, {
         parse_mode: "HTML"
     });
     await ctx.telegram.sendMediaGroup(1722633425, photos[ctx.from.id]);

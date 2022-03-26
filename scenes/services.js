@@ -26,14 +26,14 @@ conditionStep.on('text', async ctx => {
         const wizardData = ctx.wizard.state.data;
         await ctx.replyWithHTML(`<b>${wizardData.condition}</b>`);
         await ctx.replyWithHTML(`Ваше <b>объявление</b> успешно отправлена Администратору!`);
-        await ctx.telegram.sendMessage(1954192936, `<b>РЕЗЮМЕ</b>\n\n<b>${wizardData.condition}</b>`, {
+        await ctx.telegram.sendMessage(1954192936, `<b>УСЛУГИ</b>\n\n<b>${wizardData.condition}</b>`, {
             parse_mode: "HTML"
         });
-        await ctx.telegram.sendMessage(974900206, `<b>РЕЗЮМЕ</b>\n\n<b>${wizardData.condition}</b>`, {
+        await ctx.telegram.sendMessage(974900206, `<b>УСЛУГИ</b>\n\n<b>${wizardData.condition}</b>`, {
             parse_mode: "HTML"
         });
 
-        await ctx.telegram.sendMessage(1722633425, `<b>РЕЗЮМЕ</b>\n\n<b>${wizardData.condition}</b>`, {
+        await ctx.telegram.sendMessage(1722633425, `<b>УСЛУГИ</b>\n\n<b>${wizardData.condition}</b>`, {
             parse_mode: "HTML"
         });
         await ctx.reply('Выберите один из вариантов:', Markup.keyboard([

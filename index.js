@@ -141,7 +141,7 @@ bot.hears('Оргетехника и расходники', ctx => ctx.scene.ent
 bot.hears('\u{1F4E2}Посмотреть все объявления\u{1F4E2}', async ctx => {
     try {
         await ctx.reply('Вы можете перейти на канал\nс объявления по ссылке ниже', Markup.inlineKeyboard([
-            [Markup.button.url('Перейти на канал', 'https://t.me/+5V71SFuwpfMzZTIy')]
+            [Markup.button.url('Перейти на канал', 'https://t.me/+a0GoxRCglto0MWJi')]
         ]));
     } catch (e) {
         console.log(e);
