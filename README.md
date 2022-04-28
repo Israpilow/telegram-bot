@@ -2,7 +2,7 @@ Telegtam bot
 
 Stack:
 
-NodeJS
-Telegraf
+- NodeJS
+- Telegraf
 
 Telegram bot link: https://t.me/MySerulebBot
